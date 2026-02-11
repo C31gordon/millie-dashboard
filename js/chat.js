@@ -120,12 +120,11 @@ function sendMessage(text) {
       speakText(response);
     }, 500);
   } else {
-    // Queue for Millie to respond (will check on heartbeat)
-    // For now, acknowledge receipt
+    // Can't respond in real-time from static site - direct to Telegram
     setTimeout(() => {
-      const response = "Message received! I'll respond shortly — or you can reach me on Telegram for instant replies. 💬";
+      const response = "For conversations, message me on Telegram — I can't respond here in real-time yet. But I can add tasks! Try: 'add task: [your task]'";
       addMessage('millie', response);
-      speakText(response);
+      speakText("For conversations, message me on Telegram. But I can add tasks here! Just say add task and what you need.");
     }, 500);
   }
   
@@ -299,7 +298,8 @@ function renderChat() {
       <button class="chat-send-btn" id="send-btn" title="Send">➤</button>
     </div>
     <div class="chat-hint">
-      💡 Say "add task: [description]" to create a task, or just chat!
+      💡 Say "add task: [description]" to create tasks here<br>
+      💬 <a href="https://t.me/millieagent" target="_blank" style="color: var(--accent-blue);">Chat on Telegram</a> for real conversations
     </div>
   `;
   
