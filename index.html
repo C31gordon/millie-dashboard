@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Millie Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔷</text></svg>">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="header">
+      <div class="header__left">
+        <span class="header__logo">🔷</span>
+        <h1 class="header__title">Millie Dashboard</h1>
+        <span class="header__status" id="status-indicator">● Online</span>
+      </div>
+      <div class="header__right">
+        <span class="header__sync" id="last-sync">Last sync: —</span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar__avatar">🔷</div>
+        <div class="sidebar__name">Millie</div>
+        <div class="sidebar__role">Executive AI Agent</div>
+        <div class="sidebar__status">Ready for tasks</div>
+        
+        <div class="sidebar__stats">
+          <div class="stat">
+            <span class="stat__value" id="stat-todo">0</span>
+            <span class="stat__label">To Do</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value" id="stat-progress">0</span>
+            <span class="stat__label">In Progress</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value" id="stat-done">0</span>
+            <span class="stat__label">Done</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Kanban Board -->
+      <div class="board">
+        <div class="board__columns">
+          <!-- To Do -->
+          <div class="column" data-column="todo">
+            <div class="column__header">
+              <span class="column__icon">📋</span>
+              <span class="column__title">To Do</span>
+              <span class="column__count" id="count-todo">0</span>
+            </div>
+            <div class="column__cards" id="cards-todo"></div>
+            <button class="column__add" data-action="add-task" data-column="todo">+ Add Task</button>
+          </div>
+
+          <!-- In Progress -->
+          <div class="column column--progress" data-column="progress">
+            <div class="column__header">
+              <span class="column__icon">⚡</span>
+              <span class="column__title">In Progress</span>
+              <span class="column__count" id="count-progress">0</span>
+            </div>
+            <div class="column__cards" id="cards-progress"></div>
+            <button class="column__add" data-action="add-task" data-column="progress">+ Add Task</button>
+          </div>
+
+          <!-- Done -->
+          <div class="column column--done" data-column="done">
+            <div class="column__header">
+              <span class="column__icon">✅</span>
+              <span class="column__title">Done</span>
+              <span class="column__count" id="count-done">0</span>
+            </div>
+            <div class="column__cards" id="cards-done"></div>
+          </div>
+
+          <!-- Archived -->
+          <div class="column column--archived" data-column="archived">
+            <div class="column__header">
+              <span class="column__icon">📁</span>
+              <span class="column__title">Archived</span>
+              <span class="column__count" id="count-archived">0</span>
+            </div>
+            <div class="column__cards" id="cards-archived"></div>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="board__bottom">
+          <!-- Deliverables -->
+          <div class="deliverables">
+            <h3 class="deliverables__title">📦 Deliverables</h3>
+            <div class="deliverables__grid" id="deliverables-grid"></div>
+          </div>
+
+          <!-- Notes and Action Log -->
+          <div class="bottom-panels">
+            <!-- Notes for Millie -->
+            <div class="notes-panel">
+              <h3 class="notes-panel__title">📝 Notes for Millie</h3>
+              <p class="notes-panel__hint">Add tasks here — Millie checks on every heartbeat</p>
+              <textarea class="notes-panel__input" id="notes-input" placeholder="Type a task or note..."></textarea>
+              <button class="notes-panel__btn" data-action="add-from-notes">Add Task</button>
+            </div>
+
+            <!-- Action Log -->
+            <div class="action-log">
+              <h3 class="action-log__title">📜 Action Log</h3>
+              <div class="action-log__list" id="action-log"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="modal" id="task-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 id="modal-title">Add Task</h2>
+        <button class="modal__close" data-action="close-modal">&times;</button>
+      </div>
+      <form class="modal__form" id="task-form">
+        <input type="hidden" id="task-id">
+        <input type="hidden" id="task-column">
+        
+        <div class="form-group">
+          <label>Title *</label>
+          <input type="text" id="task-title" required placeholder="What needs to be done?">
+        </div>
+        
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="task-description" placeholder="Additional details..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Project</label>
+            <select id="task-project">
+              <option value="">None</option>
+              <option value="rentwise">RentWise</option>
+              <option value="ai-factory">AI Product Factory</option>
+              <option value="scorecard">Portfolio Scorecard</option>
+              <option value="rise">RISE</option>
+              <option value="ardexa">Ardexa</option>
+              <option value="shopify">Shopify (Naviga Pet)</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="task-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="task-due">
+        </div>
+        
+        <div class="modal__actions">
+          <button type="button" class="btn btn--secondary" data-action="close-modal">Cancel</button>
+          <button type="submit" class="btn btn--primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>
