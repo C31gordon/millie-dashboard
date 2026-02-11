@@ -106,16 +106,27 @@ function sendMessage(text) {
   
   if (taskTitle) {
     // Create task and respond
+    console.log('Creating task:', taskTitle);
+    console.log('MillieDashboard available:', !!window.MillieDashboard);
+    console.log('createTask available:', !!window.MillieDashboard?.createTask);
+    
+    let taskCreated = false;
     try {
-      if (window.MillieDashboard?.createTask) {
+      if (window.MillieDashboard && window.MillieDashboard.createTask) {
         window.MillieDashboard.createTask({ title: taskTitle, column: 'todo' });
+        taskCreated = true;
+        console.log('Task created successfully');
+      } else {
+        console.error('MillieDashboard.createTask not available');
       }
     } catch (e) {
       console.error('Error creating task:', e);
     }
     
     setTimeout(() => {
-      const response = `Got it! I've added "${taskTitle}" to your To Do list.`;
+      const response = taskCreated 
+        ? `Got it! I've added "${taskTitle}" to your To Do list.`
+        : `I understood the task "${taskTitle}" but couldn't add it. Try refreshing the page.`;
       addMessage('millie', response);
       speakText(response);
     }, 500);
@@ -383,11 +394,21 @@ window.MillieChat = {
   speakText
 };
 
-// Auto-init when DOM ready - wait a bit for app.js to load
+// Auto-init when DOM ready - wait for app.js module to load
+function waitForApp() {
+  if (window.MillieDashboard) {
+    console.log('MillieDashboard ready, initializing chat');
+    initChat();
+  } else {
+    console.log('Waiting for MillieDashboard...');
+    setTimeout(waitForApp, 100);
+  }
+}
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(initChat, 100);
+    setTimeout(waitForApp, 200);
   });
 } else {
-  setTimeout(initChat, 100);
+  setTimeout(waitForApp, 200);
 }
