@@ -862,3 +862,359 @@ body {
   margin-top: 8px;
   text-align: center;
 }
+
+/* Features Sections */
+.features-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.feature-panel {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.feature-panel--sm {
+  max-width: 300px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title .badge {
+  background: var(--accent-blue);
+  color: white;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.project-card {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.project-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.project-card__icon {
+  font-size: 18px;
+}
+
+.project-card__name {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.project-card__progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Progress Bars */
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar--sm {
+  height: 6px;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: var(--accent-blue);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.progress-bar__text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  min-width: 35px;
+  text-align: right;
+}
+
+/* Goals */
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.goal-card {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.goal-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.goal-card__title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.goal-card__project {
+  font-size: 11px;
+}
+
+.goal-card__progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.goal-card__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* To-Do Inbox */
+.todo-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.todo-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.todo-add-btn {
+  width: 40px;
+  background: var(--accent-blue);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.todo-add-btn:hover {
+  filter: brightness(1.1);
+}
+
+.todos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.todos-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 20px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.todo-item--completed {
+  opacity: 0.6;
+}
+
+.todo-item--completed .todo-text {
+  text-decoration: line-through;
+}
+
+.todo-check {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-primary);
+  border-radius: 50%;
+  background: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-check:hover {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.todo-check--done {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: white;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 13px;
+}
+
+.todo-source {
+  font-size: 14px;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.todo-item:hover .todo-actions {
+  opacity: 1;
+}
+
+.todo-btn {
+  padding: 4px 6px;
+  background: var(--bg-secondary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.todo-btn:hover {
+  background: var(--border-primary);
+}
+
+.todo-btn--delete:hover {
+  background: rgba(248, 81, 73, 0.2);
+}
+
+.todos-completed-header {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+/* Weekly Summary */
+.summary-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.summary-stat {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.summary-stat__value {
+  display: block;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.summary-stat--done .summary-stat__value {
+  color: var(--accent-green);
+}
+
+.summary-stat--progress .summary-stat__value {
+  color: var(--accent-blue);
+}
+
+.summary-stat--overdue .summary-stat__value {
+  color: var(--accent-red);
+}
+
+.summary-stat__label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.summary-alert {
+  margin-top: 12px;
+  padding: 10px;
+  background: rgba(248, 81, 73, 0.1);
+  border: 1px solid rgba(248, 81, 73, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--accent-red);
+}
+
+/* Due Date Colors */
+.card__date--overdue {
+  color: var(--accent-red) !important;
+  font-weight: 600;
+}
+
+.card__date--today {
+  color: var(--accent-yellow) !important;
+  font-weight: 600;
+}
+
+.card__date--soon {
+  color: var(--accent-orange) !important;
+}
+
+/* Text utilities */
+.text-danger {
+  color: var(--accent-red);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .features-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-panel--sm {
+    max-width: none;
+  }
+}

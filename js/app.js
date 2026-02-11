@@ -206,10 +206,31 @@ function renderColumns() {
  * Render a task card
  */
 function renderCard(task) {
-  const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.column !== 'done' && task.column !== 'archived';
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+  const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
   
+  let dateClass = '';
   let dateDisplay = '';
-  if (task.dueDate) {
+  
+  if (task.dueDate && task.column !== 'done' && task.column !== 'archived') {
+    const dueDate = new Date(task.dueDate);
+    const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+    
+    if (dueDateOnly < today) {
+      dateClass = 'card__date--overdue';
+      dateDisplay = `⚠️ ${Math.ceil((today - dueDateOnly) / (1000 * 60 * 60 * 24))}d overdue`;
+    } else if (dueDateOnly.getTime() === today.getTime()) {
+      dateClass = 'card__date--today';
+      dateDisplay = '📅 Due today';
+    } else if (dueDateOnly < nextWeek) {
+      dateClass = 'card__date--soon';
+      dateDisplay = dueDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    } else {
+      dateDisplay = dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+  } else if (task.dueDate) {
     const date = new Date(task.dueDate);
     dateDisplay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   } else if (task.createdAt) {
@@ -222,7 +243,7 @@ function renderCard(task) {
       <div class="card__title">${escapeHtml(task.title)}</div>
       <div class="card__meta">
         ${task.project ? `<span class="card__project">${task.project}</span>` : ''}
-        <span class="card__date ${isOverdue ? 'card__date--overdue' : ''}">${dateDisplay}</span>
+        <span class="card__date ${dateClass}">${dateDisplay}</span>
       </div>
       <div class="card__actions">
         <button class="card__btn" data-action="edit" data-task="${task.id}">Edit</button>
