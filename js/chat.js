@@ -91,6 +91,8 @@ function addMessage(role, text, options = {}) {
 function sendMessage(text) {
   if (!text.trim()) return;
   
+  console.log('Sending message:', text);
+  
   // Add user message
   addMessage('user', text);
   
@@ -99,12 +101,21 @@ function sendMessage(text) {
   if (input) input.value = '';
   
   // Check if it's a task
-  const isTask = detectTask(text);
-  if (isTask) {
+  const taskTitle = detectTask(text);
+  console.log('Detected task:', taskTitle);
+  
+  if (taskTitle) {
     // Create task and respond
-    const task = window.MillieDashboard?.createTask({ title: isTask, column: 'todo' });
+    try {
+      if (window.MillieDashboard?.createTask) {
+        window.MillieDashboard.createTask({ title: taskTitle, column: 'todo' });
+      }
+    } catch (e) {
+      console.error('Error creating task:', e);
+    }
+    
     setTimeout(() => {
-      const response = `Got it! I've added "${isTask}" to your To Do list.`;
+      const response = `Got it! I've added "${taskTitle}" to your To Do list.`;
       addMessage('millie', response);
       speakText(response);
     }, 500);
@@ -112,26 +123,34 @@ function sendMessage(text) {
     // Queue for Millie to respond (will check on heartbeat)
     // For now, acknowledge receipt
     setTimeout(() => {
-      const response = "Message received. I'll respond shortly — or you can reach me on Telegram for instant replies.";
+      const response = "Message received! I'll respond shortly — or you can reach me on Telegram for instant replies. 💬";
       addMessage('millie', response);
+      speakText(response);
     }, 500);
   }
   
   // Log action
-  window.MillieDashboard?.logAction(`Chat: ${text.substring(0, 50)}${text.length > 50 ? '...' : ''}`);
+  try {
+    window.MillieDashboard?.logAction(`Chat: ${text.substring(0, 50)}${text.length > 50 ? '...' : ''}`);
+  } catch (e) {
+    console.error('Error logging action:', e);
+  }
 }
 
 /**
  * Detect if message is a task request
  */
 function detectTask(text) {
+  const lowerText = text.toLowerCase().trim();
+  
   const taskPatterns = [
     /^add task[:\s]+(.+)/i,
     /^create task[:\s]+(.+)/i,
     /^todo[:\s]+(.+)/i,
-    /^remind me to[:\s]+(.+)/i,
-    /^need to[:\s]+(.+)/i,
-    /^add[:\s]+["'](.+)["']/i
+    /^remind me to\s+(.+)/i,
+    /^need to\s+(.+)/i,
+    /^add[:\s]+["'](.+)["']/i,
+    /^task[:\s]+(.+)/i
   ];
   
   for (const pattern of taskPatterns) {
@@ -139,6 +158,11 @@ function detectTask(text) {
     if (match) {
       return match[1].trim();
     }
+  }
+  
+  // Also check for simple "add: something" or starts with "add "
+  if (lowerText.startsWith('add ') || lowerText.startsWith('add:')) {
+    return text.substring(4).trim();
   }
   
   return null;
@@ -359,9 +383,11 @@ window.MillieChat = {
   speakText
 };
 
-// Auto-init when DOM ready
+// Auto-init when DOM ready - wait a bit for app.js to load
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initChat);
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initChat, 100);
+  });
 } else {
-  initChat();
+  setTimeout(initChat, 100);
 }
