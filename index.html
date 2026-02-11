@@ -100,14 +100,14 @@
             <div class="deliverables__grid" id="deliverables-grid"></div>
           </div>
 
-          <!-- Notes and Action Log -->
+          <!-- Chat and Action Log -->
           <div class="bottom-panels">
-            <!-- Notes for Millie -->
-            <div class="notes-panel">
-              <h3 class="notes-panel__title">📝 Notes for Millie</h3>
-              <p class="notes-panel__hint">Add tasks here — Millie checks on every heartbeat</p>
-              <textarea class="notes-panel__input" id="notes-input" placeholder="Type a task or note..."></textarea>
-              <button class="notes-panel__btn" data-action="add-from-notes">Add Task</button>
+            <!-- Chat with Millie -->
+            <div class="chat-panel">
+              <h3 class="chat-panel__title">💬 Chat with Millie</h3>
+              <div class="chat-container" id="chat-container">
+                <!-- Chat renders here -->
+              </div>
             </div>
 
             <!-- Action Log -->
@@ -181,5 +181,6 @@
   </div>
 
   <script src="js/app.js" type="module"></script>
+  <script src="js/chat.js"></script>
 </body>
 </html>
